@@ -1,6 +1,6 @@
 # orlibrary
 ```
-local MyUILib = require(game:GetService("ReplicatedStorage"):WaitForChild("MyUILib"))
+local MyUILib = loadstring(game:HttpGet("https://raw.githubusercontent.com/Eradate/orlibrary/main/Orlibrary"))()
 
 local window = MyUILib:CreateWindow("My UI")
 local tab1 = MyUILib:CreateTab(window, "Tab 1")
