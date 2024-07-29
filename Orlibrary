@@ -9,10 +9,16 @@ function MyUILib:CreateWindow(title)
     local mainFrame = Instance.new("Frame")
     mainFrame.Name = "MainFrame"
     mainFrame.Parent = window
-    mainFrame.Size = UDim2.new(0, 600, 0, 400)
-    mainFrame.Position = UDim2.new(0.5, -300, 0.5, -200)
+    mainFrame.Size = UDim2.new(0, 300, 0, 200)
+    mainFrame.Position = UDim2.new(0.5, -150, 0.5, -100)
     mainFrame.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
-    
+    mainFrame.Active = true
+    mainFrame.Draggable = true
+
+    local corner = Instance.new("UICorner")
+    corner.CornerRadius = UDim.new(0, 10)
+    corner.Parent = mainFrame
+
     return mainFrame
 end
 
@@ -21,18 +27,26 @@ function MyUILib:CreateTab(container, tabName)
     local tabButton = Instance.new("TextButton")
     tabButton.Name = tabName
     tabButton.Parent = container
-    tabButton.Size = UDim2.new(0, 100, 0, 50)
+    tabButton.Size = UDim2.new(0, 100, 0, 30)
     tabButton.Position = UDim2.new(0, (#container:GetChildren() - 1) * 110, 0, 0)
     tabButton.Text = tabName
     tabButton.BackgroundColor3 = Color3.fromRGB(0, 120, 215)
 
+    local corner = Instance.new("UICorner")
+    corner.CornerRadius = UDim.new(0, 10)
+    corner.Parent = tabButton
+
     local tabFrame = Instance.new("Frame")
     tabFrame.Name = tabName .. "Frame"
     tabFrame.Parent = container
-    tabFrame.Size = UDim2.new(1, 0, 1, -60)
-    tabFrame.Position = UDim2.new(0, 0, 0, 60)
+    tabFrame.Size = UDim2.new(1, 0, 1, -40)
+    tabFrame.Position = UDim2.new(0, 0, 0, 40)
     tabFrame.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
     tabFrame.Visible = false
+
+    local tabCorner = Instance.new("UICorner")
+    tabCorner.CornerRadius = UDim.new(0, 10)
+    tabCorner.Parent = tabFrame
 
     tabButton.MouseButton1Click:Connect(function()
         for _, frame in pairs(container:GetChildren()) do
@@ -51,13 +65,17 @@ function MyUILib:CreateButton(container, buttonText, callback)
     local button = Instance.new("TextButton")
     button.Name = buttonText
     button.Parent = container
-    button.Size = UDim2.new(0, 200, 0, 50)
+    button.Size = UDim2.new(0, 200, 0, 30)
     button.Position = UDim2.new(0, 10, 0, 10)
     button.Text = buttonText
     button.BackgroundColor3 = Color3.fromRGB(0, 120, 215)
-    
+
+    local corner = Instance.new("UICorner")
+    corner.CornerRadius = UDim.new(0, 10)
+    corner.Parent = button
+
     button.MouseButton1Click:Connect(callback)
-    
+
     return button
 end
 
@@ -67,22 +85,34 @@ function MyUILib:CreateDropdown(container, dropdownName, options, callback)
     dropdown.Name = dropdownName
     dropdown.Parent = container
     dropdown.Size = UDim2.new(0, 200, 0, 30)
-    dropdown.Position = UDim2.new(0, 10, 0, 70)
+    dropdown.Position = UDim2.new(0, 10, 0, 50)
     dropdown.BackgroundColor3 = Color3.fromRGB(0, 120, 215)
+
+    local corner = Instance.new("UICorner")
+    corner.CornerRadius = UDim.new(0, 10)
+    corner.Parent = dropdown
 
     local dropdownButton = Instance.new("TextButton")
     dropdownButton.Parent = dropdown
     dropdownButton.Size = UDim2.new(1, 0, 1, 0)
     dropdownButton.Text = "Select"
     dropdownButton.BackgroundColor3 = Color3.fromRGB(0, 120, 215)
-    
+
+    local buttonCorner = Instance.new("UICorner")
+    buttonCorner.CornerRadius = UDim.new(0, 10)
+    buttonCorner.Parent = dropdownButton
+
     local dropdownList = Instance.new("Frame")
     dropdownList.Parent = dropdown
     dropdownList.Size = UDim2.new(1, 0, 0, #options * 30)
     dropdownList.Position = UDim2.new(0, 0, 1, 0)
     dropdownList.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
     dropdownList.Visible = false
-    
+
+    local listCorner = Instance.new("UICorner")
+    listCorner.CornerRadius = UDim.new(0, 10)
+    listCorner.Parent = dropdownList
+
     for i, option in ipairs(options) do
         local optionButton = Instance.new("TextButton")
         optionButton.Parent = dropdownList
@@ -90,18 +120,22 @@ function MyUILib:CreateDropdown(container, dropdownName, options, callback)
         optionButton.Position = UDim2.new(0, 0, 0, (i - 1) * 30)
         optionButton.Text = option
         optionButton.BackgroundColor3 = Color3.fromRGB(0, 120, 215)
-        
+
+        local optionCorner = Instance.new("UICorner")
+        optionCorner.CornerRadius = UDim.new(0, 10)
+        optionCorner.Parent = optionButton
+
         optionButton.MouseButton1Click:Connect(function()
             dropdownButton.Text = option
             dropdownList.Visible = false
             callback(option)
         end)
     end
-    
+
     dropdownButton.MouseButton1Click:Connect(function()
         dropdownList.Visible = not dropdownList.Visible
     end)
-    
+
     return dropdown
 end
 
@@ -110,11 +144,15 @@ function MyUILib:CreateToggle(container, toggleName, callback)
     local toggle = Instance.new("TextButton")
     toggle.Name = toggleName
     toggle.Parent = container
-    toggle.Size = UDim2.new(0, 200, 0, 50)
-    toggle.Position = UDim2.new(0, 10, 0, 110)
+    toggle.Size = UDim2.new(0, 200, 0, 30)
+    toggle.Position = UDim2.new(0, 10, 0, 90)
     toggle.Text = toggleName
     toggle.BackgroundColor3 = Color3.fromRGB(0, 120, 215)
     local toggled = false
+
+    local corner = Instance.new("UICorner")
+    corner.CornerRadius = UDim.new(0, 10)
+    corner.Parent = toggle
 
     toggle.MouseButton1Click:Connect(function()
         toggled = not toggled
@@ -125,7 +163,7 @@ function MyUILib:CreateToggle(container, toggleName, callback)
         end
         callback(toggled)
     end)
-    
+
     return toggle
 end
 
@@ -134,12 +172,16 @@ function MyUILib:CreateLabel(container, labelText)
     local label = Instance.new("TextLabel")
     label.Name = labelText
     label.Parent = container
-    label.Size = UDim2.new(0, 200, 0, 50)
-    label.Position = UDim2.new(0, 10, 0, 170)
+    label.Size = UDim2.new(0, 200, 0, 30)
+    label.Position = UDim2.new(0, 10, 0, 130)
     label.Text = labelText
     label.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
     label.TextColor3 = Color3.fromRGB(255, 255, 255)
-    
+
+    local corner = Instance.new("UICorner")
+    corner.CornerRadius = UDim.new(0, 10)
+    corner.Parent = label
+
     return label
 end
 
@@ -148,13 +190,17 @@ function MyUILib:CreateParagraph(container, paragraphText)
     local paragraph = Instance.new("TextLabel")
     paragraph.Name = "Paragraph"
     paragraph.Parent = container
-    paragraph.Size = UDim2.new(0, 400, 0, 100)
-    paragraph.Position = UDim2.new(0, 10, 0, 230)
+    paragraph.Size = UDim2.new(0, 200, 0, 60)
+    paragraph.Position = UDim2.new(0, 10, 0, 170)
     paragraph.Text = paragraphText
     paragraph.TextWrapped = true
     paragraph.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
     paragraph.TextColor3 = Color3.fromRGB(255, 255, 255)
-    
+
+    local corner = Instance.new("UICorner")
+    corner.CornerRadius = UDim.new(0, 10)
+    corner.Parent = paragraph
+
     return paragraph
 end
 
