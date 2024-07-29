@@ -1,0 +1,161 @@
+local MyUILib = {}
+
+-- Create a window
+function MyUILib:CreateWindow(title)
+    local window = Instance.new("ScreenGui")
+    window.Name = title
+    window.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+
+    local mainFrame = Instance.new("Frame")
+    mainFrame.Name = "MainFrame"
+    mainFrame.Parent = window
+    mainFrame.Size = UDim2.new(0, 600, 0, 400)
+    mainFrame.Position = UDim2.new(0.5, -300, 0.5, -200)
+    mainFrame.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+    
+    return mainFrame
+end
+
+-- Create a tab
+function MyUILib:CreateTab(container, tabName)
+    local tabButton = Instance.new("TextButton")
+    tabButton.Name = tabName
+    tabButton.Parent = container
+    tabButton.Size = UDim2.new(0, 100, 0, 50)
+    tabButton.Position = UDim2.new(0, (#container:GetChildren() - 1) * 110, 0, 0)
+    tabButton.Text = tabName
+    tabButton.BackgroundColor3 = Color3.fromRGB(0, 120, 215)
+
+    local tabFrame = Instance.new("Frame")
+    tabFrame.Name = tabName .. "Frame"
+    tabFrame.Parent = container
+    tabFrame.Size = UDim2.new(1, 0, 1, -60)
+    tabFrame.Position = UDim2.new(0, 0, 0, 60)
+    tabFrame.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+    tabFrame.Visible = false
+
+    tabButton.MouseButton1Click:Connect(function()
+        for _, frame in pairs(container:GetChildren()) do
+            if frame:IsA("Frame") then
+                frame.Visible = false
+            end
+        end
+        tabFrame.Visible = true
+    end)
+
+    return tabFrame
+end
+
+-- Create a button
+function MyUILib:CreateButton(container, buttonText, callback)
+    local button = Instance.new("TextButton")
+    button.Name = buttonText
+    button.Parent = container
+    button.Size = UDim2.new(0, 200, 0, 50)
+    button.Position = UDim2.new(0, 10, 0, 10)
+    button.Text = buttonText
+    button.BackgroundColor3 = Color3.fromRGB(0, 120, 215)
+    
+    button.MouseButton1Click:Connect(callback)
+    
+    return button
+end
+
+-- Create a dropdown
+function MyUILib:CreateDropdown(container, dropdownName, options, callback)
+    local dropdown = Instance.new("Frame")
+    dropdown.Name = dropdownName
+    dropdown.Parent = container
+    dropdown.Size = UDim2.new(0, 200, 0, 30)
+    dropdown.Position = UDim2.new(0, 10, 0, 70)
+    dropdown.BackgroundColor3 = Color3.fromRGB(0, 120, 215)
+
+    local dropdownButton = Instance.new("TextButton")
+    dropdownButton.Parent = dropdown
+    dropdownButton.Size = UDim2.new(1, 0, 1, 0)
+    dropdownButton.Text = "Select"
+    dropdownButton.BackgroundColor3 = Color3.fromRGB(0, 120, 215)
+    
+    local dropdownList = Instance.new("Frame")
+    dropdownList.Parent = dropdown
+    dropdownList.Size = UDim2.new(1, 0, 0, #options * 30)
+    dropdownList.Position = UDim2.new(0, 0, 1, 0)
+    dropdownList.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+    dropdownList.Visible = false
+    
+    for i, option in ipairs(options) do
+        local optionButton = Instance.new("TextButton")
+        optionButton.Parent = dropdownList
+        optionButton.Size = UDim2.new(1, 0, 0, 30)
+        optionButton.Position = UDim2.new(0, 0, 0, (i - 1) * 30)
+        optionButton.Text = option
+        optionButton.BackgroundColor3 = Color3.fromRGB(0, 120, 215)
+        
+        optionButton.MouseButton1Click:Connect(function()
+            dropdownButton.Text = option
+            dropdownList.Visible = false
+            callback(option)
+        end)
+    end
+    
+    dropdownButton.MouseButton1Click:Connect(function()
+        dropdownList.Visible = not dropdownList.Visible
+    end)
+    
+    return dropdown
+end
+
+-- Create a toggle
+function MyUILib:CreateToggle(container, toggleName, callback)
+    local toggle = Instance.new("TextButton")
+    toggle.Name = toggleName
+    toggle.Parent = container
+    toggle.Size = UDim2.new(0, 200, 0, 50)
+    toggle.Position = UDim2.new(0, 10, 0, 110)
+    toggle.Text = toggleName
+    toggle.BackgroundColor3 = Color3.fromRGB(0, 120, 215)
+    local toggled = false
+
+    toggle.MouseButton1Click:Connect(function()
+        toggled = not toggled
+        if toggled then
+            toggle.BackgroundColor3 = Color3.fromRGB(0, 255, 0)
+        else
+            toggle.BackgroundColor3 = Color3.fromRGB(0, 120, 215)
+        end
+        callback(toggled)
+    end)
+    
+    return toggle
+end
+
+-- Create a label
+function MyUILib:CreateLabel(container, labelText)
+    local label = Instance.new("TextLabel")
+    label.Name = labelText
+    label.Parent = container
+    label.Size = UDim2.new(0, 200, 0, 50)
+    label.Position = UDim2.new(0, 10, 0, 170)
+    label.Text = labelText
+    label.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+    label.TextColor3 = Color3.fromRGB(255, 255, 255)
+    
+    return label
+end
+
+-- Create a paragraph
+function MyUILib:CreateParagraph(container, paragraphText)
+    local paragraph = Instance.new("TextLabel")
+    paragraph.Name = "Paragraph"
+    paragraph.Parent = container
+    paragraph.Size = UDim2.new(0, 400, 0, 100)
+    paragraph.Position = UDim2.new(0, 10, 0, 230)
+    paragraph.Text = paragraphText
+    paragraph.TextWrapped = true
+    paragraph.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+    paragraph.TextColor3 = Color3.fromRGB(255, 255, 255)
+    
+    return paragraph
+end
+
+return MyUILib
